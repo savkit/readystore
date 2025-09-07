@@ -1,0 +1,40 @@
+{
+  "name": "@readystore/core",
+  "version": "0.1.0",
+  "description": "ReadyStore Core — dependency-aware state for Angular Signals and RxJs",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo 'Error: no test specified' && exit 1",
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "angular",
+    "signals",
+    "state",
+    "store",
+    "reactive",
+    "readystore",
+    "rxjs",
+    "behavior",
+    "inheritance"
+  ],
+  "author": "Andrii Svorak <Andrew.Svorak@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/readystore/core.git"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "rxjs": "^7.8.2",
+    "typescript": "^5.9.2"
+  }
+}
