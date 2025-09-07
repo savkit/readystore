@@ -3,13 +3,12 @@
     "target": "ES5",
     "module": "ESNext",
     "lib": ["ES2015", "DOM"],
-    "downlevelIteration": true,
-    "declaration": true,
-    "declarationDir": "dist",
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node"
-  }
+    "moduleResolution": "node",
+    "downlevelIteration": true
+  },
+  "include": ["src"]
 }

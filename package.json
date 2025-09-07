@@ -38,6 +38,9 @@
     "type": "git",
     "url": "https://github.com/savkit/readystore.git"
   },
+  "bugs": {
+    "url": "https://github.com/savkit/readystore/issues"
+  },
   "files": [
     "dist"
   ],
