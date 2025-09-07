@@ -1,8 +1,10 @@
 {
   "name": "@readystore/core",
   "version": "0.1.0",
-  "description": "ReadyStore Core — dependency-aware state for Angular Signals and RxJs",
+  "description": "ReadyStore Core helps you build Stores based on pure Angular Signals or pure RxJs. A Store can work independently or be dependency-aware, relying on other Stores or facades if needed. It enables you to design clean data architectures on the UI layer, which can be easily consumed and processed by components. The code encourages keeping different logics in separate files, resulting in a cleaner and more maintainable project structure."
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "test": "echo 'Error: no test specified' && exit 1",
     "build": "tsc -p tsconfig.json",
@@ -16,6 +18,9 @@
     "reactive",
     "readystore",
     "rxjs",
+    "dependency",
+    "facade",
+    "architecture",
     "behavior",
     "inheritance"
   ],
@@ -23,10 +28,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/readystore/core.git"
+    "url": "https://github.com/savkit/readystore.git"
   },
-  "type": "module",
-  "types": "dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js"
   },
