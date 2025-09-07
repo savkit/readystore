@@ -1,13 +1,21 @@
 {
   "name": "@readystore/core",
   "version": "0.1.0",
-  "description": "ReadyStore Core helps you build Stores based on pure Angular Signals or pure RxJs. A Store can work independently or be dependency-aware, relying on other Stores or facades if needed. It enables you to design clean data architectures on the UI layer, which can be easily consumed and processed by components. The code encourages keeping different logics in separate files, resulting in a cleaner and more maintainable project structure."
-  "main": "dist/index.js",
+  "description": "ReadyStore Core helps you build Stores based on pure Angular Signals or pure RxJs. A Store can work independently or be dependency-aware, relying on other Stores or facades if needed. It enables you to design clean data architectures on the UI layer, which can be easily consumed and processed by components. The code encourages keeping different logics in separate files, resulting in a cleaner and more maintainable project structure.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
+  "unpkg": "dist/index.umd.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js"
+    }
+  },
   "type": "module",
   "scripts": {
-    "test": "echo 'Error: no test specified' && exit 1",
-    "build": "tsc -p tsconfig.json",
+    "build": "rollup -c && npm run build:types",
+    "build:types": "dts-bundle-generator -o dist/index.d.ts src/index.ts",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -30,13 +38,21 @@
     "type": "git",
     "url": "https://github.com/savkit/readystore.git"
   },
-  "exports": {
-    ".": "./dist/index.js"
-  },
   "files": [
     "dist"
   ],
+  "peerDependencies": {
+    "rxjs": "^7.0.0",
+    "@angular/core": "^16.0.0"
+  },
   "devDependencies": {
+    "@angular/core": "^20.2.4",
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "dts-bundle-generator": "^9.5.1",
+    "rollup": "^4.50.1",
+    "rollup-plugin-typescript2": "^0.36.0",
     "rxjs": "^7.8.2",
     "typescript": "^5.9.2"
   }
