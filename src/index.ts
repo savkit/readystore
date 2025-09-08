@@ -1,3 +1,5 @@
+export {useCollectionStore$} from "./collection/use-collection-store-observable.fn";
+export {useCollectionStoreAsync} from "./collection/use-collection-store-async.fn";
 export {useStore$} from "./use-store-observable.fn";
 export {useStoreAsync} from "./use-store-async.fn";
 export {useCompute$} from "./use-compute-observable.fn";

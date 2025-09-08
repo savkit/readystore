@@ -1,6 +1,6 @@
 {
   "name": "@readystore/core",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "ReadyStore Core helps you build Stores based on pure Angular Signals or pure RxJs. A Store can work independently or be dependency-aware, relying on other Stores or facades if needed. It enables you to design clean data architectures on the UI layer, which can be easily consumed and processed by components. The code encourages keeping different logics in separate files, resulting in a cleaner and more maintainable project structure.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
