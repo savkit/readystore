@@ -1,23 +1,30 @@
-import { computed, effect, signal, Signal } from '@angular/core';
-import { SignalValue } from './models/signal-value.type';
-import { AsyncState, StateStatus } from './models/load-state.type';
-import { StoreAsync } from './models/async-store.model';
+import { computed, DestroyRef, effect, inject, signal, Signal } from '@angular/core';
+import { SignalValue } from '../models/signal-value.type';
+import { AsyncState, StateStatus } from '../models/load-state.type';
+import { StoreAsync } from '../models/async-store.model';
+import { Observable, Subscription } from 'rxjs';
 
 /**
  *
  */
-export function useStoreAsync<R, Sources extends readonly Signal<unknown>[]>(
-  asyncFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>,
-  sources?: Sources,
+export function useStore$<R, Sources extends readonly Signal<unknown>[] = []>(
+  sources: Sources,
+  asyncFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Observable<R>
 ): StoreAsync<R> {
+  const destroyRef = inject(DestroyRef);
   const $state = signal<AsyncState<R>>(new AsyncState<R>());
   let state: StateStatus = 'NOT_LOADED';
   let versionCounter = 0;
   let activated = false;
 
   const $triggerAsync = signal(0);
+  let currentSubscription: Subscription | null = null;
 
   effect(() => {
+    if (currentSubscription) {
+      currentSubscription.unsubscribe();
+      currentSubscription = null;
+    }
     $triggerAsync();
     if (!activated) {
       return;
@@ -30,19 +37,20 @@ export function useStoreAsync<R, Sources extends readonly Signal<unknown>[]>(
       const currentVersion = ++versionCounter;
       state = 'LOADING';
       $state.set(new AsyncState<R>(undefined, 'LOADING'));
-      asyncFn(values)
-        .then((data: R) => {
+      currentSubscription = asyncFn(values).subscribe({
+        next: (data) => {
           if (currentVersion === versionCounter) {
             state = 'LOADED';
             $state.set(new AsyncState(data, 'LOADED'));
           }
-        })
-        .catch((error: unknown) => {
+        },
+        error: (error) => {
           if (currentVersion === versionCounter) {
             state = 'ERROR';
-            $state.set(new AsyncState<R>(undefined, 'ERROR', error));
+            $state.set(new AsyncState<R>(undefined, 'ERROR', error?.message));
           }
-        });
+        }
+      });
     } else {
       versionCounter++;
       if (state !== 'NOT_LOADED') {
@@ -56,6 +64,10 @@ export function useStoreAsync<R, Sources extends readonly Signal<unknown>[]>(
     $state.set(new AsyncState());
   };
 
+  destroyRef.onDestroy(() => {
+    currentSubscription?.unsubscribe();
+  });
+
   return new StoreAsync(
     computed(() => {
       activated = true;
@@ -68,6 +80,6 @@ export function useStoreAsync<R, Sources extends readonly Signal<unknown>[]>(
       }
       return state;
     }),
-    reset,
+    reset
   );
 }
