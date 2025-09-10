@@ -6,6 +6,8 @@ import { CollectionStoreItem } from './models/collection-item.model';
 import { resetAll } from './utils/reset-all.fn';
 import { resetState } from './utils/reset-state.fn';
 import { getStateAsync } from './utils/get-state-async.fn';
+import { updateData } from './utils/update-data.fn';
+import { deleteCollectionItem } from './utils/delete.fn';
 
 /**
  *
@@ -47,5 +49,7 @@ export function useCollectionStoreAsync<
     resetAll: (): void => resetAll(collection),
     resetState: (id: string): void => resetState(collection, id),
     getData: (id: string) => getState(id).$data,
+    updateData: (id: string, data: R) => updateData(collection, id, data),
+    delete: (id: string): void => deleteCollectionItem(collection, id),
   };
 }
