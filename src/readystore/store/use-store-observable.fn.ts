@@ -9,7 +9,7 @@ import { Observable, Subscription } from 'rxjs';
  */
 export function useStore$<R, Sources extends readonly Signal<unknown>[] = []>(
   sources: Sources,
-  asyncFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Observable<R>
+  asyncFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Observable<R>,
 ): StoreAsync<R> {
   const destroyRef = inject(DestroyRef);
   const $state = signal<AsyncState<R>>(new AsyncState<R>());
@@ -49,7 +49,7 @@ export function useStore$<R, Sources extends readonly Signal<unknown>[] = []>(
             state = 'ERROR';
             $state.set(new AsyncState<R>(undefined, 'ERROR', error?.message));
           }
-        }
+        },
       });
     } else {
       versionCounter++;
@@ -80,6 +80,6 @@ export function useStore$<R, Sources extends readonly Signal<unknown>[] = []>(
       }
       return state;
     }),
-    reset
+    reset,
   );
 }

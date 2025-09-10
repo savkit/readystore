@@ -8,7 +8,7 @@ import { StoreAsync } from '../models/async-store.model';
  */
 export function useStoreAsync<R, Sources extends readonly Signal<unknown>[]>(
   asyncFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>,
-  sources?: Sources
+  sources?: Sources,
 ): StoreAsync<R> {
   const $state = signal<AsyncState<R>>(new AsyncState<R>());
   let state: StateStatus = 'NOT_LOADED';
@@ -68,6 +68,6 @@ export function useStoreAsync<R, Sources extends readonly Signal<unknown>[]>(
       }
       return state;
     }),
-    reset
+    reset,
   );
 }

@@ -6,7 +6,7 @@ export type SourceValues<Sources extends readonly Signal<unknown>[]> = {
 };
 
 export function useCombineLatest<Sources extends readonly Signal<unknown>[]>(
-  sources: Sources
+  sources: Sources,
 ): Signal<SourceValues<Sources> | undefined> {
   return computed(() => {
     const values = sources.map((source) => source()) as SourceValues<Sources>;
