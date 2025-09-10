@@ -1,9 +1,9 @@
-import {computed, Signal} from '@angular/core';
-import {SignalValue} from "./models/signal-value.type";
+import { computed, Signal } from '@angular/core';
+import { SignalValue } from './models/signal-value.type';
 
-export function useComputeLatest<R, Sources extends readonly Signal<any>[]>(
+export function useComputeLatest<R, Sources extends readonly Signal<unknown>[]>(
   sources: Sources,
-  combinedFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => R
+  combinedFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => R,
 ): Signal<R | undefined> {
   return computed(() => {
     const values = sources.map((source) => source()) as {

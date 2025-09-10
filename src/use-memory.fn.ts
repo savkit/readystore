@@ -1,4 +1,4 @@
-import {computed, Signal} from '@angular/core';
+import { computed, Signal } from '@angular/core';
 
 /**
  * Do computation.

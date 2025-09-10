@@ -1,16 +1,14 @@
-import {effect, signal, Signal} from '@angular/core';
-import {SignalValue} from './models/signal-value.type';
-
+import { effect, signal, Signal } from '@angular/core';
+import { SignalValue } from './models/signal-value.type';
 
 /**
- *
  *
  * @param source {Signal<any>} - signal property.
  * @param computeFn - resolve function.
  */
-export function useComputeAsync<R, Source extends Signal<any>>(
+export function useComputeAsync<R, Source extends Signal<unknown>>(
   source: Source,
-  computeFn: (value: SignalValue<Source>) => Promise<R>
+  computeFn: (value: SignalValue<Source>) => Promise<R>,
 ): Signal<R | undefined> {
   const $asyncResult = signal<R | undefined>(undefined);
   let versionCounter = 0;

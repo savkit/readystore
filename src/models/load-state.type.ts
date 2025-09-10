@@ -1,9 +1,9 @@
 export class LoadState<T> {
   constructor(
     public readonly loading: boolean,
-    public readonly error: any,
+    public readonly error: unknown,
     public readonly data: T | undefined,
-    public readonly ready: boolean
+    public readonly ready: boolean,
   ) {}
 }
 
@@ -13,6 +13,6 @@ export class AsyncState<T> {
   constructor(
     public readonly data: T | undefined = undefined,
     public readonly status: StateStatus = 'NOT_LOADED',
-    public readonly error: any = undefined
+    public readonly error: unknown = undefined,
   ) {}
 }

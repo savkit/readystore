@@ -1,19 +1,22 @@
-import {effect, signal, Signal} from '@angular/core';
-import {SignalValue} from '../models/signal-value.type';
-import {StoreAsync} from '../models/async-store.model';
-import {AsyncCollectionStore} from './models/async-collection-store.model';
-import {CollectionStoreItem} from './models/collection-item.model';
-import {resetAll} from './utils/reset-all.fn';
-import {resetState} from './utils/reset-state.fn';
-import {getStateAsync} from "./utils/get-state-async.fn";
+import { effect, signal, Signal } from '@angular/core';
+import { SignalValue } from '../models/signal-value.type';
+import { StoreAsync } from '../models/async-store.model';
+import { AsyncCollectionStore } from './models/async-collection-store.model';
+import { CollectionStoreItem } from './models/collection-item.model';
+import { resetAll } from './utils/reset-all.fn';
+import { resetState } from './utils/reset-state.fn';
+import { getStateAsync } from './utils/get-state-async.fn';
 
 /**
  *
  *
  */
-export function useCollectionStore$<R, Sources extends readonly Signal<any>[] = readonly Signal<any>[]>(
+export function useCollectionStore$<
+  R,
+  Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
+>(
   sources: Sources,
-  asyncFn: (id: string, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>
+  asyncFn: (id: string, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>,
 ): AsyncCollectionStore<R> {
   const collection = new Map<string, CollectionStoreItem<R>>();
 
@@ -44,7 +47,6 @@ export function useCollectionStore$<R, Sources extends readonly Signal<any>[] = 
     getState: (id: string): StoreAsync<R> => getState(id),
     resetAll: (): void => resetAll(collection),
     resetState: (id: string): void => resetState(collection, id),
-    getData: (id: string) => getState(id).$data
+    getData: (id: string) => getState(id).$data,
   };
 }
-

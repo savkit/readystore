@@ -18,7 +18,11 @@
   "scripts": {
     "build": "rollup -c && npm run build:types",
     "build:types": "dts-bundle-generator -o dist/index.d.ts src/index.ts",
-    "publish": "npm publish --access public"
+    "publish": "npm publish --access public",
+    "format": "prettier --write ./src",
+    "format:check": "prettier --check ./src",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix"
   },
   "keywords": [
     "angular",
@@ -47,8 +51,8 @@
     "dist"
   ],
   "peerDependencies": {
-    "rxjs": "^7.0.0",
-    "@angular/core": ">=16.0.0"
+    "@angular/core": ">=16.0.0",
+    "rxjs": "^7.0.0"
   },
   "devDependencies": {
     "@angular/core": "^20.2.4",
@@ -56,9 +60,14 @@
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",
     "dts-bundle-generator": "^9.5.1",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2",
     "rollup": "^4.50.1",
     "rollup-plugin-typescript2": "^0.36.0",
     "rxjs": "^7.8.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.43.0"
   }
 }

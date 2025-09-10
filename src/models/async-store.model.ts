@@ -1,15 +1,15 @@
-import {computed, Signal} from '@angular/core';
-import {AsyncState} from './load-state.type';
+import { computed, Signal } from '@angular/core';
+import { AsyncState } from './load-state.type';
 
 export class StoreAsync<R> {
   readonly $data: Signal<R | undefined>;
   readonly $loading: Signal<boolean>;
   readonly $ready: Signal<boolean>;
-  readonly $error: Signal<any>;
+  readonly $error: Signal<unknown>;
 
   constructor(
     public readonly $state: Signal<AsyncState<R>>,
-    public readonly reset: () => void
+    public readonly reset: () => void,
   ) {
     this.$data = computed(() => $state().data);
     this.$loading = computed(() => $state().status === 'LOADING');

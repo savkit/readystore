@@ -1,16 +1,15 @@
-import {DestroyRef, effect, inject, signal, Signal} from '@angular/core';
-import {SignalValue} from './models/signal-value.type';
-import {Observable, Subscription} from 'rxjs';
+import { DestroyRef, effect, inject, signal, Signal } from '@angular/core';
+import { SignalValue } from './models/signal-value.type';
+import { Observable, Subscription } from 'rxjs';
 
 /**
- *
  *
  * @param source {Signal<any>} - signal property.
  * @param computeFn - resolve function.
  */
-export function useCompute$<R, Source extends Signal<any>>(
+export function useCompute$<R, Source extends Signal<unknown>>(
   source: Source,
-  computeFn: (value: SignalValue<Source>) => Observable<R>
+  computeFn: (value: SignalValue<Source>) => Observable<R>,
 ): Signal<R | undefined> {
   const destroyRef = inject(DestroyRef);
   const asyncResult$ = signal<R | undefined>(undefined);
@@ -29,7 +28,7 @@ export function useCompute$<R, Source extends Signal<any>>(
         },
         error: () => {
           asyncResult$.set(undefined);
-        }
+        },
       });
     } else {
       asyncResult$.set(undefined);
@@ -42,5 +41,3 @@ export function useCompute$<R, Source extends Signal<any>>(
 
   return asyncResult$;
 }
-
-

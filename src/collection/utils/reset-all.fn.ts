@@ -1,5 +1,5 @@
-import {CollectionStoreItem} from '../models/collection-item.model';
-import {AsyncState} from '../../models/load-state.type';
+import { CollectionStoreItem } from '../models/collection-item.model';
+import { AsyncState } from '../../models/load-state.type';
 
 export function resetAll<R, Key>(collection: Map<Key, CollectionStoreItem<R>>): void {
   for (const storeItem of collection.values()) {

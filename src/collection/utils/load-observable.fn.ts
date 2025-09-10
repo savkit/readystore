@@ -1,14 +1,18 @@
-import {CollectionStoreItem} from '../models/collection-item.model';
-import {AsyncState} from '../../models/load-state.type';
-import {SignalValue} from '../../models/signal-value.type';
-import {Signal} from '@angular/core';
-import {Observable} from 'rxjs';
+import { CollectionStoreItem } from '../models/collection-item.model';
+import { AsyncState } from '../../models/load-state.type';
+import { SignalValue } from '../../models/signal-value.type';
+import { Signal } from '@angular/core';
+import { Observable } from 'rxjs';
 
-export function load$<R, Key = string, Sources extends readonly Signal<any>[] = readonly Signal<any>[]>(
+export function load$<
+  R,
+  Key = string,
+  Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
+>(
   id: Key,
   storeItem: CollectionStoreItem<R>,
   asyncFn: (id: Key, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Observable<R>,
-  values: { [K in keyof Sources]: SignalValue<Sources[K]> }
+  values: { [K in keyof Sources]: SignalValue<Sources[K]> },
 ): void {
   const currentVersion = ++storeItem.versionCounters;
   storeItem.states = 'LOADING';
@@ -22,12 +26,12 @@ export function load$<R, Key = string, Sources extends readonly Signal<any>[] = 
           storeItem.$state.set(new AsyncState(data, 'LOADED'));
         }
       },
-      error: (error: any) => {
+      error: (error: unknown) => {
         if (currentVersion === storeItem.versionCounters) {
           storeItem.states = 'ERROR';
           storeItem.$state.set(new AsyncState<R>(undefined, 'ERROR', error));
         }
-      }
+      },
     });
   });
 }

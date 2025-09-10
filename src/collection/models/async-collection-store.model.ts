@@ -1,5 +1,5 @@
-import {StoreAsync} from '../../models/async-store.model';
-import {Signal} from "@angular/core";
+import { StoreAsync } from '../../models/async-store.model';
+import { Signal } from '@angular/core';
 
 export type AsyncCollectionStore<R, Key = string> = {
   getState: (id: Key) => StoreAsync<R>;

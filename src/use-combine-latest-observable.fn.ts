@@ -1,10 +1,10 @@
-import {DestroyRef, effect, inject, signal, Signal} from '@angular/core';
-import {SignalValue} from './models/signal-value.type';
-import {Observable, Subscription} from 'rxjs';
+import { DestroyRef, effect, inject, signal, Signal } from '@angular/core';
+import { SignalValue } from './models/signal-value.type';
+import { Observable, Subscription } from 'rxjs';
 
-export function useCombineLatest$<R, Sources extends readonly Signal<any>[]>(
+export function useCombineLatest$<R, Sources extends readonly Signal<unknown>[]>(
   sources: Sources,
-  asyncFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Observable<R>
+  asyncFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Observable<R>,
 ): Signal<R | undefined> {
   const destroyRef = inject(DestroyRef);
   const $asyncResult = signal<R | undefined>(undefined);
@@ -25,7 +25,7 @@ export function useCombineLatest$<R, Sources extends readonly Signal<any>[]>(
         },
         error: () => {
           $asyncResult.set(undefined);
-        }
+        },
       });
     } else {
       $asyncResult.set(undefined);

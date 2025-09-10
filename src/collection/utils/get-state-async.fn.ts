@@ -1,17 +1,17 @@
-import {computed, Signal, signal} from '@angular/core';
-import {StoreAsync} from '../../models/async-store.model';
-import {AsyncState} from '../../models/load-state.type';
-import {SignalValue} from '../../models/signal-value.type';
-import {CollectionStoreItem} from "../models/collection-item.model";
-import {loadAsync} from "./load-async.fn";
-import {resetState} from "./reset-state.fn";
+import { computed, Signal, signal } from '@angular/core';
+import { StoreAsync } from '../../models/async-store.model';
+import { AsyncState } from '../../models/load-state.type';
+import { SignalValue } from '../../models/signal-value.type';
+import { CollectionStoreItem } from '../models/collection-item.model';
+import { loadAsync } from './load-async.fn';
+import { resetState } from './reset-state.fn';
 
-export function getStateAsync<R, Sources extends readonly Signal<any>[]>(
+export function getStateAsync<R, Sources extends readonly Signal<unknown>[]>(
   collection: Map<string, CollectionStoreItem<R>>,
   id: string,
   $allAvailable: Signal<boolean>,
   lastValues: { [K in keyof Sources]: SignalValue<Sources[K]> },
-  asyncFn: (id: string, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>
+  asyncFn: (id: string, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>,
 ): StoreAsync<R> {
   const storeItem = collection.get(id) ?? new CollectionStoreItem<R>(signal(new AsyncState<R>()));
   if (!collection.has(id)) {
@@ -31,6 +31,6 @@ export function getStateAsync<R, Sources extends readonly Signal<any>[]>(
       }
       return state;
     }),
-    () => resetState(collection, id)
+    () => resetState(collection, id),
   );
 }

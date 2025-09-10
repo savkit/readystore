@@ -1,9 +1,9 @@
-import {effect, signal, Signal} from '@angular/core';
-import {SignalValue} from './models/signal-value.type';
+import { effect, signal, Signal } from '@angular/core';
+import { SignalValue } from './models/signal-value.type';
 
-export function useCombineLatestAsync<R, Sources extends readonly Signal<any>[]>(
+export function useCombineLatestAsync<R, Sources extends readonly Signal<unknown>[]>(
   sources: Sources,
-  asyncFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>
+  asyncFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>,
 ): Signal<R | undefined> {
   const $asyncResult = signal<R | undefined>(undefined);
   let versionCounter = 0;

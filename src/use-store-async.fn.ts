@@ -1,15 +1,14 @@
-import {computed, effect, signal, Signal} from '@angular/core';
-import {SignalValue} from './models/signal-value.type';
-import {AsyncState, StateStatus} from './models/load-state.type';
-import {StoreAsync} from './models/async-store.model';
+import { computed, effect, signal, Signal } from '@angular/core';
+import { SignalValue } from './models/signal-value.type';
+import { AsyncState, StateStatus } from './models/load-state.type';
+import { StoreAsync } from './models/async-store.model';
 
 /**
  *
- *
  */
-export function useStoreAsync<R, Sources extends readonly Signal<any>[]>(
+export function useStoreAsync<R, Sources extends readonly Signal<unknown>[]>(
   asyncFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>,
-  sources?: Sources
+  sources?: Sources,
 ): StoreAsync<R> {
   const $state = signal<AsyncState<R>>(new AsyncState<R>());
   let state: StateStatus = 'NOT_LOADED';
@@ -38,7 +37,7 @@ export function useStoreAsync<R, Sources extends readonly Signal<any>[]>(
             $state.set(new AsyncState(data, 'LOADED'));
           }
         })
-        .catch((error: any) => {
+        .catch((error: unknown) => {
           if (currentVersion === versionCounter) {
             state = 'ERROR';
             $state.set(new AsyncState<R>(undefined, 'ERROR', error));
@@ -69,6 +68,6 @@ export function useStoreAsync<R, Sources extends readonly Signal<any>[]>(
       }
       return state;
     }),
-    reset
+    reset,
   );
 }

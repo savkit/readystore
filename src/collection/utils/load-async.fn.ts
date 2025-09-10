@@ -1,13 +1,13 @@
-import {CollectionStoreItem} from '../models/collection-item.model';
-import {AsyncState} from '../../models/load-state.type';
-import {SignalValue} from '../../models/signal-value.type';
-import {Signal} from '@angular/core';
+import { CollectionStoreItem } from '../models/collection-item.model';
+import { AsyncState } from '../../models/load-state.type';
+import { SignalValue } from '../../models/signal-value.type';
+import { Signal } from '@angular/core';
 
-export function loadAsync<R, Sources extends readonly Signal<any>[]>(
+export function loadAsync<R, Sources extends readonly Signal<unknown>[]>(
   id: string,
   storeItem: CollectionStoreItem<R>,
   asyncFn: (id: string, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>,
-  values: { [K in keyof Sources]: SignalValue<Sources[K]> }
+  values: { [K in keyof Sources]: SignalValue<Sources[K]> },
 ): void {
   const currentVersion = ++storeItem.versionCounters;
   storeItem.states = 'LOADING';
