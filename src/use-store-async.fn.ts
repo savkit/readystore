@@ -18,7 +18,6 @@ export function useStoreAsync<R, Sources extends readonly Signal<any>[]>(
 
   const $triggerAsync = signal(0);
 
-
   effect(() => {
     $triggerAsync();
     if (!activated) {
@@ -32,40 +31,44 @@ export function useStoreAsync<R, Sources extends readonly Signal<any>[]>(
       const currentVersion = ++versionCounter;
       state = 'LOADING';
       $state.set(new AsyncState<R>(undefined, 'LOADING'));
-      asyncFn(values).then((data: R) => {
-        if (currentVersion === versionCounter) {
-          state = "LOADED"
-          $state.set(new AsyncState(data, 'LOADED'));
-        }
-      }).catch((error: any) => {
-        if (currentVersion === versionCounter) {
-          state = "ERROR"
-          $state.set(new AsyncState<R>(undefined, 'ERROR', error));
-        }
-      });
+      asyncFn(values)
+        .then((data: R) => {
+          if (currentVersion === versionCounter) {
+            state = 'LOADED';
+            $state.set(new AsyncState(data, 'LOADED'));
+          }
+        })
+        .catch((error: any) => {
+          if (currentVersion === versionCounter) {
+            state = 'ERROR';
+            $state.set(new AsyncState<R>(undefined, 'ERROR', error));
+          }
+        });
     } else {
       versionCounter++;
       if (state !== 'NOT_LOADED') {
-        state = "NOT_LOADED"
+        state = 'NOT_LOADED';
         $state.set(new AsyncState());
       }
     }
-  })
+  });
 
   const reset = (): void => {
     $state.set(new AsyncState());
-  }
+  };
 
-  return new StoreAsync(computed(() => {
-    activated = true;
-    const state = $state();
-    if (state.status === 'NOT_LOADED') {
-      // One way to update and trigger effect when there are available subscribers and avoid Angular console error.
-      setTimeout(() => {
-        $triggerAsync.update(prev => ++prev);
-      });
-    }
-    return state;
-  }), reset);
+  return new StoreAsync(
+    computed(() => {
+      activated = true;
+      const state = $state();
+      if (state.status === 'NOT_LOADED') {
+        // One way to update and trigger effect when there are available subscribers and avoid Angular console error.
+        setTimeout(() => {
+          $triggerAsync.update((prev) => ++prev);
+        });
+      }
+      return state;
+    }),
+    reset
+  );
 }
-

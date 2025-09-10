@@ -1,8 +1,12 @@
-# @readystore/core
+# @savkit/readystore
 
-**ReadyStore Core** — dependency-aware state на базі Angular Signals:
-обчислює значення лише тоді, коли всі потрібні дані **готові** (ready).
-Якщо даних бракує — обчислення не виконується.
+> ⚠️ **Alpha Version Notice**  
+> This package is currently in alpha and not ready for production use.  
+> Beta and final releases are coming soon.
+
+**ReadyStore Core** — dependency-aware state based on Angular Signals:
+computes values only when all required data is ready.
+If data is missing, computation is not performed.
 
 - ✅ Signals-first API
 - ✅ Dependency tracking
@@ -10,5 +14,6 @@
 - ✅ TypeScript typings
 
 ## Install
+
 ```bash
-npm i @readystore/core
+npm i @savkit/readystore

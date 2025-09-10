@@ -8,9 +8,9 @@ import {Observable, Subscription} from 'rxjs';
  *
  *
  */
-export function useStore$<R, Sources extends readonly Signal<any>[]>(
-  asyncFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Observable<R>,
-  sources?: Sources
+export function useStore$<R, Sources extends readonly Signal<any>[] = []>(
+  sources: Sources,
+  asyncFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Observable<R>
 ): StoreAsync<R> {
   const destroyRef = inject(DestroyRef);
   const $state = signal<AsyncState<R>>(new AsyncState<R>());
@@ -41,13 +41,13 @@ export function useStore$<R, Sources extends readonly Signal<any>[]>(
       currentSubscription = asyncFn(values).subscribe({
         next: (data) => {
           if (currentVersion === versionCounter) {
-            state = "LOADED"
+            state = 'LOADED';
             $state.set(new AsyncState(data, 'LOADED'));
           }
         },
         error: (error) => {
           if (currentVersion === versionCounter) {
-            state = "ERROR"
+            state = 'ERROR';
             $state.set(new AsyncState<R>(undefined, 'ERROR', error?.message));
           }
         }
@@ -55,30 +55,32 @@ export function useStore$<R, Sources extends readonly Signal<any>[]>(
     } else {
       versionCounter++;
       if (state !== 'NOT_LOADED') {
-        state = "NOT_LOADED"
+        state = 'NOT_LOADED';
         $state.set(new AsyncState());
       }
     }
-  })
+  });
 
   const reset = (): void => {
     $state.set(new AsyncState());
-  }
+  };
 
   destroyRef.onDestroy(() => {
     currentSubscription?.unsubscribe();
   });
 
-  return new StoreAsync(computed(() => {
-    activated = true;
-    const state = $state();
-    if (state.status === 'NOT_LOADED') {
-      // One way to update and trigger effect when there are available subscribers and avoid Angular console error.
-      setTimeout(() => {
-        $triggerAsync.update(prev => ++prev);
-      });
-    }
-    return state;
-  }), reset);
+  return new StoreAsync(
+    computed(() => {
+      activated = true;
+      const state = $state();
+      if (state.status === 'NOT_LOADED') {
+        // One way to update and trigger effect when there are available subscribers and avoid Angular console error.
+        setTimeout(() => {
+          $triggerAsync.update((prev) => ++prev);
+        });
+      }
+      return state;
+    }),
+    reset
+  );
 }
-

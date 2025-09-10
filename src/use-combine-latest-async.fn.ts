@@ -14,17 +14,19 @@ export function useCombineLatestAsync<R, Sources extends readonly Signal<any>[]>
     };
     if (values.every((value) => value !== undefined)) {
       const currentVersion = ++versionCounter;
-      asyncFn(values).then((data) => {
-        if (data !== undefined) {
-          if (currentVersion === versionCounter) {
-            $asyncResult.set(data);
+      asyncFn(values)
+        .then((data) => {
+          if (data !== undefined) {
+            if (currentVersion === versionCounter) {
+              $asyncResult.set(data);
+            }
           }
-        }
-      }).catch(() => {
-        if (currentVersion === versionCounter) {
-          $asyncResult.set(undefined);
-        }
-      });
+        })
+        .catch(() => {
+          if (currentVersion === versionCounter) {
+            $asyncResult.set(undefined);
+          }
+        });
     } else {
       versionCounter++;
       $asyncResult.set(undefined);

@@ -7,8 +7,6 @@ export class CollectionStoreItem<R> {
   versionCounters: number = 0;
   lastSubscription: Subscription | null = null;
 
-  constructor(
-    public readonly $state: WritableSignal<AsyncState<R>>
-  ) {
+  constructor(public readonly $state: WritableSignal<AsyncState<R>>) {
   }
 }

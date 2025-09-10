@@ -4,8 +4,9 @@ import {SignalValue} from '../../models/signal-value.type';
 import {Signal} from '@angular/core';
 
 export function loadAsync<R, Sources extends readonly Signal<any>[]>(
+  id: string,
   storeItem: CollectionStoreItem<R>,
-  asyncFn: (values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>,
+  asyncFn: (id: string, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>,
   values: { [K in keyof Sources]: SignalValue<Sources[K]> }
 ): void {
   const currentVersion = ++storeItem.versionCounters;
@@ -13,16 +14,18 @@ export function loadAsync<R, Sources extends readonly Signal<any>[]>(
 
   setTimeout(() => {
     storeItem.$state.set(new AsyncState<R>(undefined, 'LOADING'));
-    asyncFn(values).then((data) => {
-      if (currentVersion === storeItem.versionCounters) {
-        storeItem.states = "LOADED"
-        storeItem.$state.set(new AsyncState(data, 'LOADED'));
-      }
-    }).catch((error) => {
-      if (currentVersion === storeItem.versionCounters) {
-        storeItem.states = "ERROR"
-        storeItem.$state.set(new AsyncState<R>(undefined, 'ERROR', error));
-      }
-    });
-  })
+    asyncFn(id, values)
+      .then((data) => {
+        if (currentVersion === storeItem.versionCounters) {
+          storeItem.states = 'LOADED';
+          storeItem.$state.set(new AsyncState(data, 'LOADED'));
+        }
+      })
+      .catch((error) => {
+        if (currentVersion === storeItem.versionCounters) {
+          storeItem.states = 'ERROR';
+          storeItem.$state.set(new AsyncState<R>(undefined, 'ERROR', error));
+        }
+      });
+  });
 }

@@ -19,17 +19,19 @@ export function useComputeAsync<R, Source extends Signal<any>>(
     const value = source() as SignalValue<Source>;
     if (value !== undefined) {
       const currentVersion = ++versionCounter;
-      computeFn(value).then((data) => {
-        if (data !== undefined) {
-          if (currentVersion === versionCounter) {
-            $asyncResult.set(data);
+      computeFn(value)
+        .then((data) => {
+          if (data !== undefined) {
+            if (currentVersion === versionCounter) {
+              $asyncResult.set(data);
+            }
           }
-        }
-      }).catch(() => {
-        if (currentVersion === versionCounter) {
-          $asyncResult.set(undefined);
-        }
-      });
+        })
+        .catch(() => {
+          if (currentVersion === versionCounter) {
+            $asyncResult.set(undefined);
+          }
+        });
     } else {
       versionCounter++;
       $asyncResult.set(undefined);
