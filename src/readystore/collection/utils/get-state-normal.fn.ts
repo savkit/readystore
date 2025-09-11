@@ -6,12 +6,16 @@ import { CollectionStoreItem } from '../models/collection-item.model';
 import { resetState } from './reset-state.fn';
 import { load } from './load.fn';
 
-export function getStateNormal<R, Sources extends readonly Signal<unknown>[]>(
-  collection: Map<string, CollectionStoreItem<R>>,
-  id: string,
+export function getStateNormal<
+  R,
+  Key = string,
+  Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
+>(
+  collection: Map<Key, CollectionStoreItem<R>>,
+  id: Key,
   $allAvailable: Signal<boolean>,
   lastValues: { [K in keyof Sources]: SignalValue<Sources[K]> },
-  resolveFn?: (id: string, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => R,
+  resolveFn?: (id: Key, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => R,
 ): StoreAsync<R> {
   const storeItem = collection.get(id) ?? new CollectionStoreItem<R>(signal(new AsyncState<R>()));
   if (!collection.has(id)) {

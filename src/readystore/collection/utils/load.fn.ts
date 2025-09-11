@@ -3,11 +3,15 @@ import { AsyncState } from '../../models/load-state.type';
 import { SignalValue } from '../../models/signal-value.type';
 import { Signal } from '@angular/core';
 
-export function load<R, Sources extends readonly Signal<unknown>[]>(
-  id: string,
+export function load<
+  R,
+  Key = string,
+  Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
+>(
+  id: Key,
   storeItem: CollectionStoreItem<R>,
   values: { [K in keyof Sources]: SignalValue<Sources[K]> },
-  resolveFn: (id: string, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => R,
+  resolveFn: (id: Key, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => R,
 ): void {
   const currentVersion = ++storeItem.versionCounters;
   storeItem.states = 'LOADING';

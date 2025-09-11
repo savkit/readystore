@@ -6,6 +6,6 @@ export type AsyncCollectionStore<R, Key = string> = {
   getData: (id: Key) => Signal<R | undefined>;
   resetAll: () => void;
   resetState: (id: Key) => void;
-  updateData: (id: string, data: R) => void;
-  delete: (id: string) => void;
+  updateData: (id: Key, data: R) => void;
+  delete: (id: Key) => void;
 };

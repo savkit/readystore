@@ -14,12 +14,13 @@ import { deleteCollectionItem } from './utils/delete.fn';
  */
 export function useCollectionStoreAsync<
   R,
+  Key = string,
   Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
 >(
   sources: Sources,
-  asyncFn: (id: string, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>,
-): AsyncCollectionStore<R> {
-  const collection = new Map<string, CollectionStoreItem<R>>();
+  asyncFn: (id: Key, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>,
+): AsyncCollectionStore<R, Key> {
+  const collection = new Map<Key, CollectionStoreItem<R>>();
 
   const $allAvailable = signal(false);
   let lastValues: {
@@ -40,16 +41,16 @@ export function useCollectionStoreAsync<
     resetAll(collection);
   });
 
-  const getState = (id: string): StoreAsync<R> => {
+  const getState = (id: Key): StoreAsync<R> => {
     return getStateAsync(collection, id, $allAvailable, lastValues, asyncFn);
   };
 
   return {
-    getState: (id: string): StoreAsync<R> => getState(id),
+    getState: (id: Key): StoreAsync<R> => getState(id),
     resetAll: (): void => resetAll(collection),
-    resetState: (id: string): void => resetState(collection, id),
-    getData: (id: string) => getState(id).$data,
-    updateData: (id: string, data: R) => updateData(collection, id, data),
-    delete: (id: string): void => deleteCollectionItem(collection, id),
+    resetState: (id: Key): void => resetState(collection, id),
+    getData: (id: Key) => getState(id).$data,
+    updateData: (id: Key, data: R) => updateData(collection, id, data),
+    delete: (id: Key): void => deleteCollectionItem(collection, id),
   };
 }

@@ -14,12 +14,13 @@ import { getStateNormal } from './utils/get-state-normal.fn';
  */
 export function useCollectionStore<
   R,
+  Key = string,
   Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
 >(
   sources?: Sources,
-  resolveFn?: (id: string, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => R,
-): AsyncCollectionStore<R> {
-  const collection = new Map<string, CollectionStoreItem<R>>();
+  resolveFn?: (id: Key, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => R,
+): AsyncCollectionStore<R, Key> {
+  const collection = new Map<Key, CollectionStoreItem<R>>();
 
   // If there are no sources, then activate data chain by default.
   const $allAvailable = signal(!sources?.length);
@@ -44,16 +45,16 @@ export function useCollectionStore<
     });
   }
 
-  const getState = (id: string): StoreAsync<R> => {
+  const getState = (id: Key): StoreAsync<R> => {
     return getStateNormal(collection, id, $allAvailable, lastValues, resolveFn);
   };
 
   return {
-    getState: (id: string): StoreAsync<R> => getState(id),
+    getState: (id: Key): StoreAsync<R> => getState(id),
     resetAll: (): void => resetAll(collection),
-    resetState: (id: string): void => resetState(collection, id),
-    getData: (id: string) => getState(id).$data,
-    updateData: (id: string, data: R) => updateData(collection, id, data),
-    delete: (id: string): void => deleteCollectionItem(collection, id),
+    resetState: (id: Key): void => resetState(collection, id),
+    getData: (id: Key) => getState(id).$data,
+    updateData: (id: Key, data: R) => updateData(collection, id, data),
+    delete: (id: Key): void => deleteCollectionItem(collection, id),
   };
 }

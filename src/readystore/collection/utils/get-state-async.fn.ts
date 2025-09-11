@@ -6,12 +6,16 @@ import { CollectionStoreItem } from '../models/collection-item.model';
 import { loadAsync } from './load-async.fn';
 import { resetState } from './reset-state.fn';
 
-export function getStateAsync<R, Sources extends readonly Signal<unknown>[]>(
-  collection: Map<string, CollectionStoreItem<R>>,
-  id: string,
+export function getStateAsync<
+  R,
+  Key = string,
+  Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
+>(
+  collection: Map<Key, CollectionStoreItem<R>>,
+  id: Key,
   $allAvailable: Signal<boolean>,
   lastValues: { [K in keyof Sources]: SignalValue<Sources[K]> },
-  asyncFn: (id: string, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>,
+  asyncFn: (id: Key, values: { [K in keyof Sources]: SignalValue<Sources[K]> }) => Promise<R>,
 ): StoreAsync<R> {
   const storeItem = collection.get(id) ?? new CollectionStoreItem<R>(signal(new AsyncState<R>()));
   if (!collection.has(id)) {
