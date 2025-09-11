@@ -1,6 +1,7 @@
 export { useCollectionStore } from './readystore/collection/use-collection-store.fn';
 export { useCollectionStoreAsync } from './readystore/collection/use-collection-store-async.fn';
 export { useCollectionStore$ } from './readystore/collection/use-collection-store-observable.fn';
+export { useStore } from './readystore/store/use-store.fn';
 export { useStore$ } from './readystore/store/use-store-observable.fn';
 export { useStoreAsync } from './readystore/store/use-store-async.fn';
 export { useCompute$ } from './readystore/use-compute-observable.fn';
