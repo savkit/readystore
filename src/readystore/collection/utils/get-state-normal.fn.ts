@@ -8,7 +8,7 @@ import { load } from './load.fn';
 
 export function getStateNormal<
   R,
-  Key = string,
+  Key,
   Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
 >(
   collection: Map<Key, CollectionStoreItem<R>>,

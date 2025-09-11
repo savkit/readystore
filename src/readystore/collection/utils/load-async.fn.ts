@@ -5,7 +5,7 @@ import { Signal } from '@angular/core';
 
 export function loadAsync<
   R,
-  Key = string,
+  Key,
   Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
 >(
   id: Key,

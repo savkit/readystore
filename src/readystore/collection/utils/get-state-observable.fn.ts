@@ -9,7 +9,7 @@ import { resetState } from './reset-state.fn';
 
 export function getStateObservable<
   R,
-  Key = string,
+  Key,
   Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
 >(
   collection: Map<Key, CollectionStoreItem<R>>,

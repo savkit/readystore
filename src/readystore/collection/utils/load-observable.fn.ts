@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 export function load$<
   R,
-  Key = string,
+  Key,
   Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
 >(
   id: Key,

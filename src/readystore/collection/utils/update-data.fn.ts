@@ -1,7 +1,7 @@
 import { CollectionStoreItem } from '../models/collection-item.model';
 import { AsyncState } from '../../models/load-state.type';
 
-export function updateData<R, Key = string>(
+export function updateData<R, Key>(
   collection: Map<Key, CollectionStoreItem<R>>,
   id: Key,
   data: R,

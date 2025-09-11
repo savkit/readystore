@@ -8,7 +8,7 @@ import { resetState } from './reset-state.fn';
 
 export function getStateAsync<
   R,
-  Key = string,
+  Key,
   Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
 >(
   collection: Map<Key, CollectionStoreItem<R>>,

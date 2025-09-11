@@ -14,7 +14,7 @@ import { getStateNormal } from './utils/get-state-normal.fn';
  */
 export function useCollectionStore<
   R,
-  Key = string,
+  Key = number,
   Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
 >(
   sources?: Sources,

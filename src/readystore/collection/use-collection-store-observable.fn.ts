@@ -15,7 +15,7 @@ import { deleteCollectionItem } from './utils/delete.fn';
  */
 export function useCollectionStore$<
   R,
-  Key = string,
+  Key = number,
   Sources extends readonly Signal<unknown>[] = readonly Signal<unknown>[],
 >(
   sources: Sources,
